@@ -18,7 +18,7 @@ type vaultResponse struct {
 }
 type certData struct {
 	Certificate string `json:"certificate"`
-	PrivateKey  string `json:"private_key"`
+	PrivateKey  string `json:"privateKey"`
 }
 
 func convert(input certData, pass string) (p12 []byte, err error) {
