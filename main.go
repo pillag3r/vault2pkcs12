@@ -13,9 +13,6 @@ import (
 	"os"
 )
 
-type vaultResponse struct {
-	Data certData `json:"data"`
-}
 type certData struct {
 	Certificate string `json:"certificate"`
 	PrivateKey  string `json:"privateKey"`
@@ -62,19 +59,20 @@ func main() {
 		log.Fatal(err)
 	}
 
-	input := vaultResponse{}
-	if err := json.Unmarshal(inputData, &input); err != nil {
-		log.Fatal(err)
-	}
+        input := certData{}
+        if err := json.Unmarshal(inputData, &input); err != nil {
+                log.Fatal(err)
+        }
 
-	if input.Data.PrivateKey == "" || input.Data.Certificate == "" {
-		log.Fatal("private key or certificate data cannot be nil")
-	}
+        if input.PrivateKey == "" || input.Certificate == "" {
+                log.Fatal("private key or certificate data cannot be nil")
+        }
 
-	p12, err := convert(input.Data, *password)
-	if err != nil {
-		log.Fatal(err)
-	}
+        p12, err := convert(input, *password)
+        if err != nil {
+                log.Fatal(err)
+        }
+
 
 	if *output != "stdout" {
 		if err := ioutil.WriteFile(*output, p12, 0644); err != nil {
